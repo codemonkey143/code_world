@@ -1,10 +1,11 @@
 from flask import render_template
-
 from . import app
 from .database import session,Entry
 from flask import request, redirect, url_for
 
 PAGINATE_BY = 10
+
+
 @app.route("/")
 @app.route("/page/<int:page>")
 def entries(page=1):
@@ -32,6 +33,7 @@ def entries(page=1):
         total_pages=total_pages
     )
 
+
 # It display the page you entered
 @app.route("/entry/<int:page>")
 def entries_page(page):
@@ -40,14 +42,32 @@ def entries_page(page):
     entries = entries.filter_by(id=page)
     return render_template("entries.html",entries=entries)
     
-@app.route("/entry/<int:page>/edit")
+
+@app.route("/entry/<int:page>/edit", methods=["GET"])
 def entries_edit_get(page):
     page = page + 1
-    entries = entries.query(Entry)
-    entries = entries.filter_by(id=page)
-    print("")
-    return render_template("add_entry_display.html")
+ 
+    entries = session.query(Entry.title,Entry.content).filter_by(id=page)
+    for entry in entries:
+        title = entry.title
+        content = entry.content
+    return render_template("entries_edit.html",title=title,content=content)
+
+
+from sqlalchemy import update
+@app.route("/entry/<int:page>/edit", methods=["POST"])
+def entries_edit_post(page):
+    page = page + 1
     
+    entry=Entry(
+    title = request.form["title"],
+    content = request.form["content"],
+    )
+    #session.update(Entry).where(Entry.id==page).values(title=Entry.title,content=Entry.content)
+    session.commit()
+    return redirect(url_for("entries"))
+    
+
 @app.route("/entry/add", methods=["GET"])
 def add_entry_get():
     return render_template("add_entry.html")
@@ -61,5 +81,4 @@ def add_entry_post():
     session.add(entry)
     session.commit()
     return redirect(url_for("entries"))
-    
     

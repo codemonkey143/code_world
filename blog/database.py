@@ -14,7 +14,7 @@ session = Session()
 
 import datetime
 
-from sqlalchemy import Column, Integer,String, Text, DateTime
+from sqlalchemy import Column, Integer,String, Text, DateTime,update
 
 class Entry(Base):
     __tablename__ = 'entries'
