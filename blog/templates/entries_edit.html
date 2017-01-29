@@ -11,7 +11,9 @@
     </div>
     <div class="form-group">
         <label for="content">Content</label>
-        <textarea textareaObject.value = "{{title}}" class="form-control" id="content" name="content" placeholder="{{content}}" rows="20" cols="50" contenteditable=true required></textarea>
+        <textarea class="form-control" id="content" name="content" placeholder="textarea" rows="20" cols="50" contenteditable=true required>
+            {{content}}
+        </textarea>
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
 </form>
