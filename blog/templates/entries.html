@@ -1,22 +1,43 @@
 {% import "macros.html" as macros %}
 {% extends "base.html" %}
+
+
 {% block content %}
 
 {% for entry in entries %}
 {{ macros.render_entry(entry) }}
 {% endfor %}
 
+<form action="demo_form.asp" id="pageform" method="POST">
+
+<select name="page-limit" form="pageform">
+  <option value="20">default</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+</select>
+
+</form>
+
 <ul class="pager">
     {% if has_next %}
-    <li class="previous" >
-    <a href="{{ url_for('entries', page=page + 1) }}">&larr; Older</a>
+    <li class="previous">
+    <a href="{{ url_for('entries',page=page+1) }}">&larr;Older</a>
     </li>
     {% endif %}
     {% if has_prev %}
     <li class="next">
-    <a href="{{ url_for('entries', page=page - 1) }}">&rarr; Newer</a>
+    <a href="{{ url_for('entries',page=page-1) }}">&rarr;Newer</a>
     </li>
     {% endif %}
 </ul>
+
 {% endblock %}
+
 
